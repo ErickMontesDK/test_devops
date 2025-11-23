@@ -60,15 +60,15 @@ jobs:
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
             # Pull the latest image
-            docker pull ghcr.io/${{ github.repository }}:latest
+            sudo docker pull ghcr.io/${{ github.repository }}:latest
             
             # Stop and remove existing container if it exists
-            docker stop simple-express-app || true
-            docker rm simple-express-app || true
+            sudo docker stop simple-express-app || true
+            sudo docker rm simple-express-app || true
             
             # Run the new container
             # Mapping port 80 on host to 3000 in container
-            docker run -d \
+            sudo docker run -d \
               --name simple-express-app \
               -p 80:3000 \
               --restart unless-stopped \
@@ -83,7 +83,6 @@ jobs:
       - name: Notify Lambda Function
         env:
           DEPLOY_STATUS: ${{ needs.deploy.result }}
-        if: always()
         run: |
           STATUS="failure"
           if [ "$DEPLOY_STATUS" = "success" ]; then
