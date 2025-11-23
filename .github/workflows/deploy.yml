@@ -99,9 +99,10 @@ jobs:
           curl -X POST ${{ secrets.LAMBDA_FUNCTION_URL }} \
           -H "Content-Type: application/json" \
           -d '{
-            "commit_id": "${{ github.sha }}",
+            "commit": "${{ github.sha }}",
             "timestamp": "${{ github.event.head_commit.timestamp }}",
-            "author": "${{ github.actor }}",
-            "repository": "${{ github.repository }}",
+            "triggered_by": "${{ github.actor }}",
+            "repo": "${{ github.repository }}",
+            "message": "${{ github.event.head_commit.message }}",
             "status": "'"$STATUS"'"
           }'
